@@ -1,0 +1,69 @@
+<main class="main">
+
+  <h1>OCPP Logs POC</h1>
+  <div class="content">
+    <section class="column-1">
+      <h3>Create Logs</h3>
+      <ul>
+        <li>
+          <button type="submit" (click)="addNewOcppHearbeatLog()">Add OCPP Heartbeat Log</button>
+        </li>
+        <li>
+          <button type="submit" (click)="addNewOcppStartUpLog()">Add OCPP Start Up Log</button>
+        </li>
+        <li>
+          <button type="submit" (click)="addNewOcppShutdownLog()">Add OCPP Shutdown Log</button>
+        </li>
+
+      </ul>
+      <h3>Auto Log Creation</h3>
+      <ul>
+        <li>
+          <button type="submit" (click)="startProducingLogs(100)">Start producing logs (10/sec)</button>
+        </li>
+        <li>
+          <button type="submit" (click)="startProducingLogs(20)">Start producing logs  (50/sec)</button>
+        </li>
+        <li>
+          <button type="submit" (click)="startProducingLogs(10)">Start producing logs  (100/sec)</button>
+        </li>
+        <li>
+          <button type="submit" (click)="stopProducingLogs()">Stop producing logs</button>
+        </li>
+      </ul>
+      <h3>Log Filtering</h3>
+      <label>Filters:
+        <select #filters (change)="setFilter(filters.value)">
+          <option value="">none</option>
+          <option value="heartbeat">heartbeat</option>
+          <option value="Start up">Start up</option>
+          <option value="Shutdown">Shutdown</option>
+        </select>
+      </label>
+    </section>
+    <section class="column-2">
+    <table>
+      <thead>
+      <tr>
+        <th class="fixed">Date</th>
+        <th class="fixed">Time</th>
+        <th>Type</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (ocppLog of (ocppLogs$ | async); track ocppLog.id) {
+          <tr>
+            <td>{{ ocppLog.timestamp.toLocaleDateString() }}</td>
+            <td>{{ ocppLog.timestamp.toLocaleTimeString() }}:{{ocppLog.timestamp.getMilliseconds()}}</td>
+            <td>{{ ocppLog.type }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+
+    </section>
+  </div>
+</main>
+
+<router-outlet/>
